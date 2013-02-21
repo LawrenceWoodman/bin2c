@@ -4,9 +4,9 @@
 # If no output file specified, then outputs to stdout
 # Could set array name on command line with a switch
 
-if {$argc != 1} {
+if {$argc != 2} {
   puts "Error: wrong number of arguments"
-  puts "Usage: bin2c <inputFilename>"
+  puts "Usage: bin2c <inputFilename> <arrayName>"
   exit
 }
 
@@ -26,7 +26,8 @@ proc string2Hex {string} {
 }
 
 
-proc outputC {hexList arrayName outFid} {
+proc bin2c {binaryString arrayName outFid} {
+  set hexList [string2Hex $binaryString]
   set hexLength [llength $hexList]
   puts $outFid "unsigned char $arrayName\[\] = {"
   for {set i 0} {$i < $hexLength} {incr i} {
@@ -47,9 +48,9 @@ proc outputC {hexList arrayName outFid} {
   puts $outFid "_len = $hexLength;"
 }
 
-set filename [lindex $argv 0]
-set inputFileContents [readBinaryFile $filename]
-set hex [string2Hex $inputFileContents]
+set inputFilename [lindex $argv 0]
+set arrayName [lindex $argv 1]
+set inputFileContents [readBinaryFile $inputFilename]
 set outFid stdout
 
-outputC $hex $filename $outFid
+bin2c $inputFileContents $arrayName $outFid
