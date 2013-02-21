@@ -1,12 +1,25 @@
 #!/usr/bin/env tclsh
-
-# First argument is file to convert, second is optional and is output file.
-# If no output file specified, then outputs to stdout
-# Could set array name on command line with a switch
+#
+# Convert an input file to a C array so that it can be included within a C
+# source file.
+#
+# Copyright (C) 2013 Lawrence Woodman <http://techtinkering.com>
+#
+# Licensed under an MIT licence.  Please see LICENCE.md for details.
+#
+# Usage: bin2c.tcl <inputFilename> <arrayName> [outputFilename]
+# Where:
+#   inputFilename      The name of the file you want to create an array from.
+#   arrayName          The name of the array that you want to create, which
+#                      will also have an associated variable with _len
+#                      appended to give the length of the array.
+#   outputFilename     Optional output filename.  If not specified then output
+#                      will be to stdout.
+#
 
 if {$argc < 2 || $argc > 3} {
   puts "Error: wrong number of arguments"
-  puts "Usage: bin2c <inputFilename> <arrayName> \[outputFilename\]"
+  puts "Usage: bin2c.tcl <inputFilename> <arrayName> \[outputFilename\]"
   exit
 }
 
