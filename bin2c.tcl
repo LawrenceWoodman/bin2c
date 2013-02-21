@@ -4,9 +4,9 @@
 # If no output file specified, then outputs to stdout
 # Could set array name on command line with a switch
 
-if {$argc != 2} {
+if {$argc < 2 || $argc > 3} {
   puts "Error: wrong number of arguments"
-  puts "Usage: bin2c <inputFilename> <arrayName>"
+  puts "Usage: bin2c <inputFilename> <arrayName> \[outputFilename\]"
   exit
 }
 
@@ -51,6 +51,16 @@ proc bin2c {binaryString arrayName outFid} {
 set inputFilename [lindex $argv 0]
 set arrayName [lindex $argv 1]
 set inputFileContents [readBinaryFile $inputFilename]
-set outFid stdout
+
+if {$argc == 2} {
+  set outFid stdout
+} else {
+  set outputFilename [lindex $argv 2]
+  set outFid [open $outputFilename w]
+}
 
 bin2c $inputFileContents $arrayName $outFid
+
+if {$argc ==3} {
+  close $outFid
+}
