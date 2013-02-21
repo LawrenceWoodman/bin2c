@@ -25,25 +25,35 @@ proc string2Hex {string} {
   return [split $hex]
 }
 
+proc getHexLines {hexList valuesPerLine} {
+  set hexLength [llength $hexList]
+  for {set i 0} {$i < $hexLength} {incr i} {
+    if {$i % $valuesPerLine == 0} {
+      append output "\n "
+    }
+
+    set num [lindex $hexList $i]
+    append output " 0x$num"
+
+    if {$i != $hexLength-1} {
+      append output ","
+      if {($i+1) % $valuesPerLine == 0} {
+        append output "\n"
+      }
+    }
+  }
+  return $output
+}
 
 proc bin2c {binaryString arrayName outFid} {
   set hexList [string2Hex $binaryString]
   set hexLength [llength $hexList]
-  puts $outFid "unsigned char $arrayName\[\] = {"
-  for {set i 0} {$i < $hexLength} {incr i} {
-    if {$i % 12 == 0} {puts -nonewline " "}
 
-    set num [lindex $hexList $i]
-    puts -nonewline $outFid " 0x$num"
-
-    if {$i != $hexLength-1} {
-      puts -nonewline $outFid ","
-      if {($i+1) % 12 == 0} {
-        puts $outFid ""
-      }
-    }
+  puts -nonewline $outFid "unsigned char $arrayName\[\] = {"
+  if {$hexLength != 0} {
+    puts $outFid [getHexLines $hexList 12]
   }
-  puts $outFid "\n};"
+  puts $outFid "};"
   puts -nonewline $outFid "unsigned int $arrayName"
   puts $outFid "_len = $hexLength;"
 }
