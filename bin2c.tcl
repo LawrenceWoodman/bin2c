@@ -1,7 +1,6 @@
 #!/usr/bin/env tclsh
 #
-# Convert an input file to a C array so that it can be included within a C
-# source file.
+# Convert an input file to a C array for inclusion within a C source file.
 #
 # Copyright (C) 2013 Lawrence Woodman <http://techtinkering.com>
 #
