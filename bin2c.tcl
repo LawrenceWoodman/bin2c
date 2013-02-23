@@ -40,21 +40,20 @@ proc string2Hex {string} {
 
 proc getHexLines {hexList valuesPerLine} {
   set hexLength [llength $hexList]
-  for {set i 0} {$i < $hexLength} {incr i} {
-    if {$i % $valuesPerLine == 0} {
-      append output "\n "
-    }
+  set output "\n "
 
+  for {set i 0} {$i < $hexLength} {incr i} {
     set num [lindex $hexList $i]
     append output " 0x$num"
 
     if {$i != $hexLength-1} {
       append output ","
       if {($i+1) % $valuesPerLine == 0} {
-        append output "\n"
+        append output "\n "
       }
     }
   }
+
   return $output
 }
 
